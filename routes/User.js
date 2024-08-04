@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 // Register
 router.post('/register', async (req, res) => {
@@ -33,4 +34,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/get-profile', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password'); // Exclude the password field
+    if (!user) {
+      return res.status(404).send({ error: 'User not found' });
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ error: 'Server error' });
+  }
+});
+
 module.exports = router;
+
+
