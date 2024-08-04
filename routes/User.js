@@ -42,7 +42,7 @@ router.get('/get-profile', auth, async (req, res) => {
     }
     res.send(user);
   } catch (error) {
-    res.status(500).send({ error: 'Server error' });
+    res.status(500).send({ error: 'Server error ' });
   }
 });
 
